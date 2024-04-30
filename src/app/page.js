@@ -1,96 +1,86 @@
-import Image from "next/image";
-import styles from "./page.module.css";
-import {google} from 'googleapis'
+"use client";
+import React, { useState } from "react";
+import Image from 'next/image'
 
-export default function Home() {
+/*import main from "/frontCard.jpeg";
+import shitaabi from "/public/Shitaabi.png";
+import waalimo from "/public/backCard.jpeg";*/
+
+import Details from "./Invite/details.js";
+import RSVPForm from "./Invite/rsvpForm.js";
+
+const main = "/frontCard.jpeg";
+const shitaabi= "/Shitaabi.png";
+const waalimo = "/backCard.jpeg";
+
+
+
+const Home= () => {
+  const [showModal, setShowModal] = useState(false);
+  const gLoc = "Al Masjid Al Zainee Anjuman-e-Burhani (New Jersey)";
+  const dLoc =
+    "341 Dunhams Corner Rd, East Brunswick, NJ 08816 Saturday, August 17th, 2024";
+  const rsvpDate = "Saturday, June 15th, 2024";
+
+  const mainT = true;
+  const shitaabiT = true;
+  const waalimoT = true;
+
+  const [cardOrder, setCardOrder] = useState(() => {
+    const order = [];
+    if (waalimoT) order.push(waalimo);
+    if (shitaabiT) order.push(shitaabi);
+    if (mainT) order.push(main);
+    return order;
+  });
+
+  const handleCardClick = (clickedCard) => {
+    console.log(clickedCard);
+    const newOrder = cardOrder.filter((card) => card !== clickedCard);
+    newOrder.push(clickedCard);
+    setCardOrder(newOrder);
+  };
+
+  const openForm = () => {
+    setShowModal(true);
+  };
+
+  const formSubmit = () => {
+    setShowModal(false);
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="container text-center landingpage">
+      {showModal && <RSVPForm closeForm={formSubmit} />}
+      <div className="row p-3 mt-3 mb-4">
+        <h1>Mogul Shaadi 1446</h1>
+      </div>
+      <div className="row">
+        <div className="col-12 col-md-6 p-3 order-md-1 cardsDiv">
+          <div className="image-stack">
+            {cardOrder.map((item, index) => (
+              <div
+                key={index}
+                className="cardD"
+                onClick={() => handleCardClick(item)}
+                style={{ zIndex: cardOrder.indexOf(item) + 1 }}
+              >
+                <img src={item} alt="Card" className="cardView card-img-top" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="col-12 col-md-6 d-flex align-items-center order-md-2">
+          <Details
+            genericLocation={gLoc}
+            detailedLocation={dLoc}
+            rsvpDate={rsvpDate}
+            openForm={openForm}
+          />
         </div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
-}
+};
+
+export default Home;
