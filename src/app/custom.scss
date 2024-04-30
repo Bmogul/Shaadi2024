@@ -1,0 +1,14 @@
+// Override default variables before the import
+$body-bg: #f5ddaf;
+// Example customization
+$font-family-sans-serif: "Elsie Swash Caps", serif;
+
+// Import Bootstrap and its default variables
+@import "~bootstrap/scss/bootstrap.scss";
+
+a {
+  all: unset;
+  cursor: pointer;
+}
+
+
