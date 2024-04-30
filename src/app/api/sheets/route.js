@@ -23,8 +23,52 @@ export async function GET() {
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
       range: "EmailWhatsapp",
     });
+    const rawData = response.data.values;
+    const parsed = {};
+    const keys = [
+      "GUID",
+      "HOFID",
+      "NJscan_id",
+      "HOFID-temp",
+      "HOF Flag",
+      "LastName",
+      "relationnameTitle",
+      "Fname",
+      "HOFEmail",
+      "E-mail1",
+      "Whatsapp#",
+      "GenderSal",
+      "Gender",
+      "Name",
+      "MCnt",
+      "Fcnt",
+      "MainInvite",
+      "ShitabiInvite",
+      "WalimoInvite",
+      "Mainviteby Num,ber",
+      "MainResponse",
+      "ShitabiResponse",
+      "WalimoResponse",
+    ];
 
-    return  NextResponse.json(response.data.values)
+    rawData.forEach((row) => {
+      const hofId = row[1];
+
+      if (!parsed[hofId]) {
+        // If a family object with this HOFID doesn't exist, create a new one
+        parsed[hofId] = [];
+      }
+
+      const parsedRow = row.reduce((acc, value, index) => {
+        acc[keys[index]] = value || undefined;
+        return acc;
+      }, {});
+
+      parsed[hofId].push(parsedRow);
+    });
+    console.log("PARSED DATA", parsed);
+
+    return NextResponse.json(parsed);
   } catch (err) {
     console.error(err);
   }
