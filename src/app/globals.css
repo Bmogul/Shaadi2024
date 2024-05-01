@@ -95,11 +95,42 @@ a {
 
 .closeRing {
   cursor: pointer;
-  width: 10%;
+  width: 7%;
 }
 
 .formHeader {
-  margin-left: 35%
+  margin-left: 40%
+}
+
+.figIcon{
+  margin-right: 5px;
+  width: 3%;
+}
+
+.formDetail{
+  width: 250px;
+  text-align: left;
+}
+
+.formDetailTitle{
+  padding: 2px;
+}
+
+.formDetailContainer{
+  padding: 2px;
+  margin-left: 2%;
+  width:150px;
+}
+
+.eventFormContainer{
+  margin-left: 10px;
+  margin-right: 10px
+}
+
+.individualEntry{
+  padding: 2px;
+  margin-top: 10px;
+  margin-bottom: 10px
 }
 
 @media (max-width: 780px) {

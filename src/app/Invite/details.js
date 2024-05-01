@@ -20,10 +20,9 @@ const Details = ({ genericLocation, detailedLocation, rsvpDate, openForm }) => {
             Open Map
           </a>
         </div>
-        <div className="col-md">
-          <img src="/Date_range_fill.svg" />
+        {/*<div className="col-md">
           <label>Add to Calander</label>
-        </div>
+        </div>*/}
       </div>
       <div className="row mb-5">
         <label className="fs-3">Please RSVP by {rsvpDate}</label>

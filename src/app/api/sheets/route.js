@@ -31,31 +31,7 @@ export async function GET(req) {
     });
     const rawData = response.data.values;
     const parsed = {};
-    const keys = [
-      "GUID",
-      "HOFID",
-      "NJscan_id",
-      "HOFID-temp",
-      "HOF Flag",
-      "LastName",
-      "relationnameTitle",
-      "Fname",
-      "HOFEmail",
-      "E-mail1",
-      "Whatsapp#",
-      "GenderSal",
-      "Gender",
-      "Name",
-      "MCnt",
-      "Fcnt",
-      "MainInvite",
-      "ShitabiInvite",
-      "WalimoInvite",
-      "Mainviteby Num,ber",
-      "MainResponse",
-      "ShitabiResponse",
-      "WalimoResponse",
-    ];
+    const keys = rawData.shift();
 
     rawData.forEach((row) => {
       const hofId = row[0];
@@ -72,13 +48,16 @@ export async function GET(req) {
 
       parsed[hofId].push(parsedRow);
     });
-    console.log("PARSED DATA", parsed);
+    console.log(rawData[0]);
+    //console.log("PARSED DATA", parsed);
     const familyData = parsed[guid] || [];
 
     return NextResponse.json(familyData);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 },
+    );
   }
-
 }

@@ -100,7 +100,7 @@ const Home = () => {
 
 return (
   <div className="container text-center landingpage">
-    {showModal && <RSVPForm closeForm={formSubmit} />}
+    {showModal && <RSVPForm closeForm={formSubmit} family={family} invitedTo={{mainT, shitaabiT, waalimoT}} />}
     <div className="row p-3 mt-3 mb-4">
       <h1>Mogul Shaadi 1446</h1>
     </div>
@@ -110,7 +110,7 @@ return (
           <p className="fs-2">Soon?</p>
         </div>
       </div>
-    ) : family ? (
+    ) : family && Object.keys(family).length > 0 ? (
       <div className="row">
         <div className="col-12 col-md-6 p-3 order-md-1 cardsDiv">
           <div className="image-stack">

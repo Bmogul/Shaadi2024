@@ -1,15 +1,34 @@
-/*import React from 'react'
+import React from "react";
 
-const ShitaabiForm = () => {
+import IndividualEntry from './individualEntry.js'
+
+const EventForm = ({ title, date, location, members }) => {
+  console.log(members);
   return (
-    <div className="row d-flex">
-      <label className="fs-4">Shitaabi</label>
-  </div>)
-}
+    <div className="eventFormContainer">
+      <div className="row d-flex mt-3">
+        <div className="d-flex justify-content-left formDetailTitle ">
+          <label className="fs-3">{title}</label>
+        </div>
+        <div className="d-flex justify-content-left formDetailContainer ">
+          <img className="figIcon" src="/Date_range_fill.svg" />
+          <label className="fs-6 formDetail">{date}</label>
+        </div>
+        <div className="d-flex justify-content-left formDetailContainer ">
+          <img className="figIcon" src="/Pin_alt.svg" />
+          <label className="fs-6 formDetail">{location}</label>
+        </div>
+      </div>
+      {members && members.map((member, index) => (
+        <IndividualEntry key={index} member={member} />
+      ))}
+        </div>
+      );
+};
 
-export default ShitaabiForm*/
+      export default EventForm;
 
-import React from 'react';
+/*import React from 'react';
 
 const ShitaabiComponent = () => {
   return (
@@ -48,4 +67,4 @@ const ShitaabiComponent = () => {
   );
 };
 
-export default ShitaabiComponent;
+export default ShitaabiComponent;*/
