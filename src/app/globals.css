@@ -89,6 +89,17 @@ a {
   transition: transform 0.5s ease;
 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.75);
+
+  /*background: #FFE8AE;*/
+}
+
+.closeRing {
+  cursor: pointer;
+  width: 10%;
+}
+
+.formHeader {
+  margin-left: 35%
 }
 
 @media (max-width: 780px) {
