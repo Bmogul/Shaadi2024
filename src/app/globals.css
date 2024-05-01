@@ -48,12 +48,12 @@ a {
 
 .cardD:nth-child(1):hover {
   transform: scale(1.05);
-  transform: translateY(-10px);
+  transform: translateX(5px) translateY(-10px);
 }
 
 .cardD:nth-child(2):hover,
 .cardD:nth-child(3):hover {
-  transform: translateY(-10px);
+  transform: translateX(5px) translateY(-10px);
 }
 
 .cardD:nth-child(1) {
@@ -63,12 +63,14 @@ a {
 .cardD:nth-child(2) {
   z-index: 2;
   top: 0px;
+  right: 10px;
   /* Adjust the top offset for the second card */
 }
 
 .cardD:nth-child(3) {
   z-index: 1;
   top: 40px;
+  right: 20px;
   /* Adjust the top offset for the third card */
 }
 
