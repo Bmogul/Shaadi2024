@@ -98,9 +98,20 @@ const Home = () => {
     setShowModal(false);
   };
 
+const updateMember = (member) => {
+  const updatedFam = family.map(mem => {
+    if (mem.NJscan_id === member.NJscan_id) {
+      return member;
+    }
+    return mem;
+  });
+  setFamily(updatedFam)
+  console.log("Jello", member, updatedFam, family);
+};
+
 return (
   <div className="container text-center landingpage">
-    {showModal && <RSVPForm closeForm={formSubmit} family={family} invitedTo={{mainT, shitaabiT, waalimoT}} />}
+    {showModal && <RSVPForm closeForm={formSubmit} family={family} invitedTo={{mainT, shitaabiT, waalimoT}} updateMember={updateMember} />}
     <div className="row p-3 mt-3 mb-4">
       <h1>Mogul Shaadi 1446</h1>
     </div>

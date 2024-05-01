@@ -2,13 +2,22 @@ import React, { useState, useEffect } from "react";
 
 import EventForm from "./forms/eventForm.js";
 
-const RSVPForm = ({ closeForm, family, invitedTo }) => { 
+const RSVPForm = ({ closeForm, family, invitedTo, updateMember }) => { 
+  const [invitedEvents, setInvitedEvents] = useState([])
+  const [mainMembers, setMainMembers] = useState(undefined) 
   const [shitaabiMembers, setShitaabiMembers] = useState(undefined) 
+  const [waalimoMembers, setWaalimoMembers] = useState(undefined) 
 
   useEffect(()=>{
     if(!family) return
-    const updatedMem = family.filter(member => parseInt(member.ShitabiInvite) === 1)
-    setShitaabiMembers(updatedMem)
+    const updatedMemS = family.filter(member => parseInt(member.ShitabiInvite) >= 1)
+    setShitaabiMembers(updatedMemS)
+
+    const updatedMemM = family.filter(member => parseInt(member.MainInvite) >= 1)
+    setMainMembers(updatedMemM)
+
+    const updatedMemW = family.filter(member => parseInt(member.WaalimoInvite) >= 1)
+    setMainMembers(updatedMemW)
     console.log("setting members", family, updatedMem)
   },[family])
 
@@ -40,6 +49,7 @@ const RSVPForm = ({ closeForm, family, invitedTo }) => {
             date="August 16th, 2024"
             location="B2 Georges road, Dayton NJ, 08810"
             members={shitaabiMembers}
+            updateMember={updateMember}
           />
         </div>
       )}

@@ -99,38 +99,59 @@ a {
 }
 
 .formHeader {
-  margin-left: 40%
+  margin-left: 40%;
 }
 
-.figIcon{
+.formHeader2 {
+  margin-bottom: 5%;
+}
+
+.figIcon {
   margin-right: 5px;
   width: 3%;
 }
 
-.formDetail{
+.formDetail {
   width: 250px;
   text-align: left;
 }
 
-.formDetailTitle{
+.formDetailTitle {
   padding: 2px;
 }
 
-.formDetailContainer{
+.formDetailContainer {
   padding: 2px;
   margin-left: 2%;
-  width:150px;
+  width: 150px;
 }
 
-.eventFormContainer{
+.eventFormContainer {
   margin-left: 10px;
-  margin-right: 10px
+  margin-right: 10px;
 }
 
-.individualEntry{
+.individualEntry {
   padding: 2px;
-  margin-top: 10px;
-  margin-bottom: 10px
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.rsvpResBtn {
+  padding: 1px 20px;
+  border: none;
+}
+
+.rsvpResBtnS {
+  background: #a0d580;
+}
+
+.rsvpResBtnS:hover {
+  background: #506a40;
+}
+
+.rsvpResBtn:hover {
+  background: #506a40;
 }
 
 @media (max-width: 780px) {

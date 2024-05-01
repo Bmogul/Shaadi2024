@@ -1,12 +1,12 @@
 import React from "react";
 
-import IndividualEntry from './individualEntry.js'
+import IndividualEntry from "./individualEntry.js";
 
-const EventForm = ({ title, date, location, members }) => {
+const EventForm = ({ title, date, location, members, updateMember }) => {
   console.log(members);
   return (
     <div className="eventFormContainer">
-      <div className="row d-flex mt-3">
+      <div className="row d-flex mt-3 formHeader2">
         <div className="d-flex justify-content-left formDetailTitle ">
           <label className="fs-3">{title}</label>
         </div>
@@ -19,14 +19,22 @@ const EventForm = ({ title, date, location, members }) => {
           <label className="fs-6 formDetail">{location}</label>
         </div>
       </div>
-      {members && members.map((member, index) => (
-        <IndividualEntry key={index} member={member} />
-      ))}
-        </div>
-      );
+      <div className="FormResponseBox">
+        {members &&
+          members.map((member, index) => (
+            <IndividualEntry
+              key={index}
+              member={member}
+              event={title}
+              updateMember={updateMember}
+            />
+          ))}
+      </div>
+    </div>
+  );
 };
 
-      export default EventForm;
+export default EventForm;
 
 /*import React from 'react';
 
