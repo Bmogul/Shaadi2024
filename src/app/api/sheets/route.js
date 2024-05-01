@@ -16,8 +16,14 @@ export default async function handler(req, res) {
   }
 }
 
-export async function GET() {
+export async function GET(req) {
   try {
+    const { searchParams } = new URL(req.url);
+    const guid = searchParams.get("guid");
+
+    if (!guid)
+      return NextResponse.json({ message: "Missing guid" }, { status: 400 });
+
     const sheets = await getGoogleSheets();
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
@@ -60,18 +66,19 @@ export async function GET() {
       }
 
       const parsedRow = row.reduce((acc, value, index) => {
-        acc[keys[index]] = value || undefined;
+        acc[keys[index]] = value || null;
         return acc;
       }, {});
 
       parsed[hofId].push(parsedRow);
     });
     console.log("PARSED DATA", parsed);
+    const familyData = parsed[guid] || [];
 
-    return NextResponse.json(parsed);
+    return NextResponse.json(familyData);
   } catch (err) {
     console.error(err);
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
 
-  return NextResponse.json({ message: "HELLO - GET" });
 }

@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
-import Image from 'next/image'
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 /*import main from "/frontCard.jpeg";
 import shitaabi from "/public/Shitaabi.png";
@@ -10,21 +11,24 @@ import Details from "./Invite/details.js";
 import RSVPForm from "./Invite/rsvpForm.js";
 
 const main = "/frontCard.jpeg";
-const shitaabi= "/Shitaabi.png";
-const waalimo = "/backCard.jpeg";
+const shitaabi = "/Shitaabi.png";
+const waalimo = "/waalimoFront.jpg";
 
-
-
-const Home= () => {
+const Home = () => {
+  const [family, setFamily] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  const [mainT, setMainT] = useState(false);
+  const [shitaabiT, setShitaabiT] = useState(false);
+  const [waalimoT, setWaalimoT] = useState(false);
+
+  const searchParams = useSearchParams();
+  const guid = searchParams.get("guid");
+
   const gLoc = "Al Masjid Al Zainee Anjuman-e-Burhani (New Jersey)";
   const dLoc =
     "341 Dunhams Corner Rd, East Brunswick, NJ 08816 Saturday, August 17th, 2024";
   const rsvpDate = "Saturday, June 15th, 2024";
-
-  const mainT = true;
-  const shitaabiT = true;
-  const waalimoT = true;
 
   const [cardOrder, setCardOrder] = useState(() => {
     const order = [];
@@ -33,6 +37,51 @@ const Home= () => {
     if (mainT) order.push(main);
     return order;
   });
+
+  useEffect(() => {
+    if (!family) return;
+    console.log("Family set", family);
+    const updatedMainT = Object.values(family).some(
+      (fam) => fam.MainInvite === "1" || fam.MainInvite > 1,
+    );
+    setMainT(updatedMainT);
+
+    const updatedShitaabiT = Object.values(family).some(
+      (fam) => fam.ShitabiInvite === "1" || fam.ShitabiInvite > 1,
+    );
+    setShitaabiT(updatedShitaabiT);
+
+    const updatedWaalimoT = Object.values(family).some(
+      (fam) => fam.WalimoInvite === "1" || fam.WalimoInvite > 1,
+    );
+    setWaalimoT(updatedWaalimoT);
+
+    setCardOrder(() => {
+      const order = [];
+      if (updatedWaalimoT) order.push(waalimo);
+      if (updatedShitaabiT) order.push(shitaabi);
+      if (updatedMainT) order.push(main);
+      return order;
+    });
+
+    console.log(updatedMainT, updatedShitaabiT, updatedWaalimoT);
+  }, [family]);
+
+  useEffect(() => {
+    console.log(guid);
+    const fetchData = async (guid) => {
+      try {
+        const response = await fetch(`/api/sheets?guid=${guid}`);
+        const data = await response.json();
+        // Process the data as needed
+        console.log(data);
+        setFamily(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData(guid);
+  }, [guid]);
 
   const handleCardClick = (clickedCard) => {
     console.log(clickedCard);
@@ -49,12 +98,19 @@ const Home= () => {
     setShowModal(false);
   };
 
-  return (
-    <div className="container text-center landingpage">
-      {showModal && <RSVPForm closeForm={formSubmit} />}
-      <div className="row p-3 mt-3 mb-4">
-        <h1>Mogul Shaadi 1446</h1>
+return (
+  <div className="container text-center landingpage">
+    {showModal && <RSVPForm closeForm={formSubmit} />}
+    <div className="row p-3 mt-3 mb-4">
+      <h1>Mogul Shaadi 1446</h1>
+    </div>
+    {!guid ? (
+      <div className="row">
+        <div className="col-12 text-center">
+          <p className="fs-2">Soon?</p>
+        </div>
       </div>
+    ) : family ? (
       <div className="row">
         <div className="col-12 col-md-6 p-3 order-md-1 cardsDiv">
           <div className="image-stack">
@@ -79,8 +135,15 @@ const Home= () => {
           />
         </div>
       </div>
-    </div>
-  );
+    ) : (
+      <div className="row">
+        <div className="col-12 text-center">
+          <p className="fs-2">Loading...</p>
+        </div>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default Home;
