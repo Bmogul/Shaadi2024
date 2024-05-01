@@ -23,7 +23,7 @@ const RSVPForm = ({
     setShitaabiMembers(updatedMemS);
 
     const updatedMemM = family.filter(
-      (member) => parseInt(member.MainInvite) >= 1,
+      (member) => parseInt(member.MainInvite) >= 1 || member.MainInvite === "ALL",
     );
     setMainMembers(updatedMemM);
 

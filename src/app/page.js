@@ -2,6 +2,7 @@
 import React, { Suspense, useState, useEffect } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
 
 /*import main from "/frontCard.jpeg";
 import shitaabi from "/public/Shitaabi.png";
@@ -42,17 +43,20 @@ const Home = () => {
     if (!family) return;
     console.log("Family set", family);
     const updatedMainT = Object.values(family).some(
-      (fam) => fam.MainInvite === "1" || fam.MainInvite > 1,
+      (fam) =>
+        fam.MainInvite === "1" ||
+        parseInt(fam.MainInvite) > 1 ||
+        fam.MainInvite === "ALL",
     );
     setMainT(updatedMainT);
 
     const updatedShitaabiT = Object.values(family).some(
-      (fam) => fam.ShitabiInvite === "1" || fam.ShitabiInvite > 1,
+      (fam) => fam.ShitabiInvite === "1" || parseInt(fam.ShitabiInvite) > 1,
     );
     setShitaabiT(updatedShitaabiT);
 
     const updatedWaalimoT = Object.values(family).some(
-      (fam) => fam.WalimoInvite === "1" || fam.WalimoInvite > 1,
+      (fam) => fam.WalimoInvite === "1" || parseInt(fam.WalimoInvite) > 1,
     );
     setWaalimoT(updatedWaalimoT);
 
@@ -109,7 +113,9 @@ const Home = () => {
   };
 
   const saveRsvpRes = () => {
-    console.log("Saving");
+    toast("Thank you for your response")
+    setShowModal(false)
+    console.log("Saving", family);
   };
 
   return (
@@ -162,7 +168,6 @@ const Home = () => {
               openForm={openForm}
             />
           </div>
-
         </div>
       ) : (
         <div className="row">
@@ -179,6 +184,8 @@ export default function Root() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Home />
+
+      <ToastContainer />
     </Suspense>
   );
 }

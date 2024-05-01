@@ -1,9 +1,29 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 import IndividualEntry from "./individualEntry.js";
 
 const EventForm = ({ title, date, location, members, updateMember }) => {
-  console.log(members);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (members !== undefined) {
+      setIsLoading(false);
+    }
+  }, [members]);
+
+  console.log('ALL MEMBERS', members);
+
+  // Check if the title is "Shaadi Jaman & Darees"
+  const isMainEvent = title === "Shaadi Jaman & Darees";
+
+  // Find the member with a non-zero MainFlag value (only if it's the main event)
+  const memberWithFlag = isMainEvent
+    ? members?.find((member) => parseInt(member.MainFlag) !== 0)
+    : null;
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="eventFormContainer">
       <div className="row d-flex mt-3 formHeader2">
@@ -20,7 +40,19 @@ const EventForm = ({ title, date, location, members, updateMember }) => {
         </div>
       </div>
       <div className="FormResponseBox">
-        {members &&
+        {/* Render IndividualEntry for the member with a non-zero MainFlag (only if it's the main event) */}
+        {memberWithFlag && (
+          <IndividualEntry
+            key={memberWithFlag.HOFID}
+            member={memberWithFlag}
+            event={title}
+            updateMember={updateMember}
+          />
+        )}
+
+        {/* Render all members (if it's not the main event) */}
+        {!isMainEvent &&
+          members &&
           members.map((member, index) => (
             <IndividualEntry
               key={index}
@@ -29,50 +61,23 @@ const EventForm = ({ title, date, location, members, updateMember }) => {
               updateMember={updateMember}
             />
           ))}
+
+        {/* Render other members without a MainFlag (if it's the main event) */}
+        {isMainEvent &&
+          members &&
+          members
+            .filter((member) => member.MainFlag === 0)
+            .map((member, index) => (
+              <IndividualEntry
+                key={index}
+                member={member}
+                event={title}
+                updateMember={updateMember}
+              />
+            ))}
       </div>
     </div>
   );
 };
 
 export default EventForm;
-
-/*import React from 'react';
-
-const ShitaabiComponent = () => {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <h2 style={{ fontFamily: 'Arial, sans-serif' }}>Shitaabi</h2>
-      <p style={{ fontFamily: 'Arial, sans-serif' }}>August 16th, 2024</p>
-      <button style={{ marginTop: '10px', backgroundColor: '#C4C4C4', border: 'none', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer' }}>Add to Calendar</button>
-      <p style={{ fontFamily: 'Arial, sans-serif', marginTop: '20px' }}>Shabbir Mogul</p>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-        <button
-          style={{
-            backgroundColor: '#A9D08E',
-            color: 'white',
-            border: 'none',
-            padding: '8px 16px',
-            borderRadius: '4px',
-            marginRight: '10px',
-            cursor: 'pointer',
-          }}
-        >
-          Yes
-        </button>
-        <button
-          style={{
-            backgroundColor: '#C4C4C4',
-            border: 'none',
-            padding: '8px 16px',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
-        >
-          No
-        </button>
-      </div>
-    </div>
-  );
-};
-
-export default ShitaabiComponent;*/

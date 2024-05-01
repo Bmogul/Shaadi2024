@@ -134,6 +134,7 @@ a {
 .individualEntry {
   /*padding: 2px;*/
   display: flex;
+  justify-content: space-between;
   margin-top: 25px;
   margin-bottom: 25px;
 }
@@ -177,6 +178,12 @@ a {
 
 .formUtilityBtns{
   margin-top: 10%;
+}
+
+.selectRSVP{
+  width: 80px;
+  text-align: center;
+  padding: 7px;
 }
 
 @media (max-width: 780px) {
