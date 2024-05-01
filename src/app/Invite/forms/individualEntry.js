@@ -6,28 +6,28 @@ const Component = ({ key, member, event, updateMember }) => {
 
   useEffect(() => {
     switch (event) {
-      case 'Shitaabi':
-        setEventRes("ShitabiResponse")
+      case "Shitaabi":
+        setEventRes("ShitabiResponse");
         break;
-      case 'Waalimo':
-        setEventRes("WalimoResponse")
+      case "Waalimo":
+        setEventRes("WalimoResponse");
         break;
-      case 'Shaadi Jaman & Darees':
-        setEventRes("MainResponse")
+      case "Shaadi Jaman & Darees":
+        setEventRes("MainResponse");
         break;
       default:
-        console.log(event)
-        setEventRes(null)
+        console.log(event);
+        setEventRes(null);
         break;
     }
-  }, [event])
+  }, [event]);
 
   const handleButtonClick = (response) => {
-    console.log(response)
+    console.log(response);
     const updatedMemberData = { ...memberData };
     updatedMemberData[eventRes] = response ? 1 : 0;
     setMemberData(updatedMemberData);
-    updateMember(updatedMemberData)
+    updateMember(updatedMemberData);
   };
 
   const isYesButtonActive = parseInt(memberData[eventRes]) === 1;
@@ -35,28 +35,35 @@ const Component = ({ key, member, event, updateMember }) => {
 
   return (
     <div>
-      {eventRes != undefined & eventRes != null ? (
-      <div className="d-flex justify-content-left individualEntry">
-        <div className="col-md-6">
-          <label className="fs-5">{member.Fname + " " + member.LastName}</label>
+      {(eventRes != undefined) & (eventRes != null) ? (
+        <div className="individualEntry">
+          <div className="col-md-4">
+            <label className="fs-5">
+              {member.Fname + " " + member.LastName}
+            </label>
+          </div>
+          <div className="col-md-3">
+            <button
+              className={`rounded-4 fs-5 rsvpResBtn ${isYesButtonActive ? "rsvpResBtnS" : ""}`}
+              onClick={() => handleButtonClick(true)}
+            >
+              Yes
+            </button>
+          </div>
+          <div className="col-md-3">
+            <button
+              className={`rounded-4 fs-5 rsvpResBtn ${isNoButtonActive ? "rsvpResBtnS" : ""}`}
+              onClick={() => handleButtonClick(false)}
+            >
+              No
+            </button>
+          </div>
         </div>
-        <div className="col-md-3">
-          <button
-            className={`rounded-4 fs-5 rsvpResBtn ${isYesButtonActive ? 'rsvpResBtnS' : ''}`}
-            onClick={() => handleButtonClick(true)}
-          >
-            Yes
-          </button>
+      ) : (
+        <div>
+          <label>Hello {eventRes}</label>
         </div>
-        <div className="col-md-3">
-          <button
-            className={`rounded-4 fs-5 rsvpResBtn ${isNoButtonActive ? 'rsvpResBtnS' : ''}`}
-            onClick={() => handleButtonClick(false)}
-          >
-            No
-          </button>
-        </div>
-      </div>):(<div><label>Hello {eventRes}</label></div>)}
+      )}
     </div>
   );
 };

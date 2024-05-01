@@ -132,26 +132,51 @@ a {
 }
 
 .individualEntry {
-  padding: 2px;
+  /*padding: 2px;*/
+  display: flex;
   margin-top: 25px;
   margin-bottom: 25px;
 }
 
+/*.individualEntry div{
+  margin-left: 1%;
+  margin-right: 1%;
+}*/
+
 .rsvpResBtn {
   padding: 1px 20px;
   border: none;
+  transition: transform 0.5s ease;
 }
 
 .rsvpResBtnS {
+  transition: transform 0.5s ease;
   background: #a0d580;
 }
 
-.rsvpResBtnS:hover {
-  background: #506a40;
+.rsvpResBtn:hover {
+  transform: scale(1.05);
+  background: #c6e5b2;
 }
 
-.rsvpResBtn:hover {
-  background: #506a40;
+.rsvpResBtnS:hover {
+  transform: scale(1.05);
+  background: #e3e3e3;
+}
+
+.rsvpFormBtn {
+  border: none;
+  padding: 5px 20px;
+
+  transition: transform 0.5s ease;
+}
+
+.rsvpFormBtn:hover {
+  transform: scale(1.1);
+}
+
+.formUtilityBtns{
+  margin-top: 10%;
 }
 
 @media (max-width: 780px) {
@@ -186,5 +211,12 @@ a {
     top: 40px;
     right: 0px;
     /* Adjust the top offset for the third card */
+  }
+  .individualEntry{
+    display: flex;
+    justify-content: space-between;
+  }
+  .individualEntry div{
+    width: 200px;
   }
 }

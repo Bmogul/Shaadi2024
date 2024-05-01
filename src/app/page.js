@@ -98,63 +98,81 @@ const Home = () => {
     setShowModal(false);
   };
 
-const updateMember = (member) => {
-  const updatedFam = family.map(mem => {
-    if (mem.NJscan_id === member.NJscan_id) {
-      return member;
-    }
-    return mem;
-  });
-  setFamily(updatedFam)
-  console.log("Jello", member, updatedFam, family);
-};
+  const updateMember = (member) => {
+    const updatedFam = family.map((mem) => {
+      if (mem.NJscan_id === member.NJscan_id) {
+        return member;
+      }
+      return mem;
+    });
+    setFamily(updatedFam);
+  };
 
-return (
-  <div className="container text-center landingpage">
-    {showModal && <RSVPForm closeForm={formSubmit} family={family} invitedTo={{mainT, shitaabiT, waalimoT}} updateMember={updateMember} />}
-    <div className="row p-3 mt-3 mb-4">
-      <h1>Mogul Shaadi 1446</h1>
-    </div>
-    {!guid ? (
-      <div className="row">
-        <div className="col-12 text-center">
-          <p className="fs-2">Soon?</p>
-        </div>
+  const saveRsvpRes = () => {
+    console.log("Saving");
+  };
+
+  return (
+    <div className="container text-center landingpage">
+      {showModal && (
+        <RSVPForm
+          closeForm={formSubmit}
+          family={family}
+          invitedTo={{ mainT, shitaabiT, waalimoT }}
+          updateMember={updateMember}
+          saveRsvpRes={saveRsvpRes}
+        />
+      )}
+      <div className="row p-3 mt-3 mb-4">
+        <h1>Mogul Shaadi 1446</h1>
       </div>
-    ) : family && Object.keys(family).length > 0 ? (
-      <div className="row">
-        <div className="col-12 col-md-6 p-3 order-md-1 cardsDiv">
-          <div className="image-stack">
-            {cardOrder.map((item, index) => (
-              <div
-                key={index}
-                className="cardD"
-                onClick={() => handleCardClick(item)}
-                style={{ zIndex: cardOrder.indexOf(item) + 1 }}
-              >
-                <img src={item} alt="Card" className="cardView card-img-top" />
-              </div>
-            ))}
+      {!guid ? (
+        <div className="row">
+          <div className="col-12 text-center">
+            <p className="fs-2">Soon?</p>
           </div>
         </div>
-        <div className="col-12 col-md-6 d-flex align-items-center order-md-2">
-          <Details
-            genericLocation={gLoc}
-            detailedLocation={dLoc}
-            rsvpDate={rsvpDate}
-            openForm={openForm}
-          />
+      ) : family && Object.keys(family).length > 0 ? (
+        <div className="row">
+          <div className="col-12 col-md-5 p-3 order-md-1 cardsDiv">
+            <div className="image-stack">
+              {cardOrder.map((item, index) => (
+                <div
+                  key={index}
+                  className="cardD"
+                  onClick={() => handleCardClick(item)}
+                  style={{ zIndex: cardOrder.indexOf(item) + 1 }}
+                >
+                  <img
+                    src={item}
+                    alt="Card"
+                    className="cardView card-img-top"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="col-12 col-md-1" />
+          <div className="col-12 col-md-5 d-flex align-items-center order-md-2">
+            <Details
+              genericLocation={gLoc}
+              detailedLocation={dLoc}
+              rsvpDate={rsvpDate}
+              openForm={openForm}
+            />
+          </div>
+
         </div>
-      </div>
-    ) : (
-      <div className="row">
-        <div className="col-12 text-center">
-          <p className="fs-2">Loading...</p>
+      ) : (
+        <div className="row">
+          <div className="col-12 text-center">
+            <p className="fs-2">Loading...</p>
+          </div>
         </div>
-      </div>
-    )}
-  </div>
-);
+      )}
+    </div>
+  );
 };
 
 export default function Root() {
@@ -164,4 +182,3 @@ export default function Root() {
     </Suspense>
   );
 }
-
