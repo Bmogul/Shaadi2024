@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Elsie+Swash+Caps:wght@400;900&display=swap");
+
 * {
   font-family: "Elsie Swash Caps", serif;
 }
@@ -98,5 +99,29 @@ a {
     right: 0;
     margin-left: 0;
     margin-right: 0;
+  }
+
+  .cardD:nth-child(1):hover {
+    transform: scale(1.05);
+    transform: translateY(-10px);
+  }
+
+  .cardD:nth-child(2):hover,
+  .cardD:nth-child(3):hover {
+    transform: translateY(-10px);
+  }
+
+  .cardD:nth-child(2) {
+    z-index: 2;
+    top: 0px;
+    right: 0px;
+    /* Adjust the top offset for the second card */
+  }
+
+  .cardD:nth-child(3) {
+    z-index: 1;
+    top: 40px;
+    right: 0px;
+    /* Adjust the top offset for the third card */
   }
 }
