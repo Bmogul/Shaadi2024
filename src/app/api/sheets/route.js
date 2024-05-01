@@ -58,7 +58,7 @@ export async function GET(req) {
     ];
 
     rawData.forEach((row) => {
-      const hofId = row[1];
+      const hofId = row[0];
 
       if (!parsed[hofId]) {
         // If a family object with this HOFID doesn't exist, create a new one
