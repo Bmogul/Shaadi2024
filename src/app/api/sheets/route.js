@@ -19,16 +19,15 @@ export async function POST(req) {
   try {
     console.log("posting");
     const { family } = await req.json();
+
     if (!family || family.length === 0)
       return NextResponse.json(
         { message: "Invalid data format" },
-        { status: 400 },
+        { status: 400 }
       );
 
     const sheets = await getGoogleSheets();
-    const ranges = [];
 
-    // Get all values from the sheet
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
       range: "playground",
@@ -36,29 +35,25 @@ export async function POST(req) {
     });
 
     const allValues = response.data.values || [];
-    // Get the header row
     const headerRow = allValues.shift();
-
-    // Find the indices of the GUID and NJscan_id columns
     const guidColumnIndex = headerRow.indexOf("GUID");
     const njScanIdColumnIndex = headerRow.indexOf("NJscan_id");
 
+    const valuesToUpdate = {};
+
     for (const member of family) {
-      let range = "";
       const { GUID, NJscan_id } = member;
 
       if (!GUID || !NJscan_id) {
         continue; // Skip members without GUID or NJscan_id
       }
 
-      // Find the matching row(s) based on GUID and NJscan_id
-
-      const matchingRows = allValues.filter(async (row, rowIndex) => {
+      const matchingRows = allValues.filter((row) => {
         if (
           row[guidColumnIndex] === GUID &&
           row[njScanIdColumnIndex] === NJscan_id
         ) {
-          const rowNumber = rowIndex + 2;
+          const rowNumber = allValues.indexOf(row) + 2;
           const cellRange = `playground!V${rowNumber}:Y${rowNumber}`;
           const values = [
             parseInt(member.MainResponse),
@@ -66,26 +61,38 @@ export async function POST(req) {
             parseInt(member.WalimoResponse),
           ];
 
+          valuesToUpdate[cellRange] = {
+            values: [values],
+          };
 
-          // Append values for each matching row
-          const res = await sheets.spreadsheets.values.update({
-            spreadsheetId: process.env.GOOGLE_SHEET_ID,
-            range: cellRange,
-            valueInputOption: "RAW",
-            resource: {
-              values: [values],
-            },
-          })
-
-          //console.log(values)
-          console.log([res.status, res.statusText, res.data, res.body])
           return true;
         }
+
         return false;
       });
     }
+
+    if (Object.keys(valuesToUpdate).length > 0) {
+      const batchUpdateRequest = {
+        data: [],
+        valueInputOption: "RAW",
+      };
+
+      for (const [range, valueData] of Object.entries(valuesToUpdate)) {
+        batchUpdateRequest.data.push({
+          range,
+          ...valueData,
+        });
+      }
+
+      const res = await sheets.spreadsheets.values.batchUpdate({
+        spreadsheetId: process.env.GOOGLE_SHEET_ID,
+        resource: batchUpdateRequest,
+      });
+      console.log(batchUpdateRequest)
+    }
+
     return NextResponse.json({ message: "Success" }, { status: 200 });
-    console.log(ranges);
   } catch (e) {
     console.log(e);
     return NextResponse.json({ message: "Fail" }, { status: 500 });
