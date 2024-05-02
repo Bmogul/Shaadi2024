@@ -28,3 +28,15 @@ export const getGoogleSheets = async () => {
 
   return sheets;
 };
+
+const auth = new google.auth.GoogleAuth({
+  credentials: serviceAccount,
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+
+const getAuthClient = async () => {
+  const authClient = await auth.getClient();
+  return google.sheets({ version: 'v4', auth: authClient });
+};
+
+export default getAuthClient;

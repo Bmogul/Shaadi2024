@@ -89,6 +89,101 @@ a {
   transition: transform 0.5s ease;
 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.75);
+
+  /*background: #FFE8AE;*/
+}
+
+.closeRing {
+  cursor: pointer;
+  width: 7%;
+}
+
+.formHeader {
+  margin-left: 40%;
+}
+
+.formHeader2 {
+  margin-bottom: 5%;
+}
+
+.figIcon {
+  margin-right: 5px;
+  width: 3%;
+}
+
+.formDetail {
+  width: 250px;
+  text-align: left;
+}
+
+.formDetailTitle {
+  padding: 2px;
+}
+
+.formDetailContainer {
+  padding: 2px;
+  margin-left: 2%;
+  width: 150px;
+}
+
+.eventFormContainer {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.individualEntry {
+  /*padding: 2px;*/
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+/*.individualEntry div{
+  margin-left: 1%;
+  margin-right: 1%;
+}*/
+
+.rsvpResBtn {
+  padding: 1px 20px;
+  border: none;
+  transition: transform 0.5s ease;
+}
+
+.rsvpResBtnS {
+  transition: transform 0.5s ease;
+  background: #a0d580;
+}
+
+.rsvpResBtn:hover {
+  transform: scale(1.05);
+  background: #c6e5b2;
+}
+
+.rsvpResBtnS:hover {
+  transform: scale(1.05);
+  background: #e3e3e3;
+}
+
+.rsvpFormBtn {
+  border: none;
+  padding: 5px 20px;
+
+  transition: transform 0.5s ease;
+}
+
+.rsvpFormBtn:hover {
+  transform: scale(1.1);
+}
+
+.formUtilityBtns{
+  margin-top: 10%;
+}
+
+.selectRSVP{
+  width: 80px;
+  text-align: center;
+  padding: 7px;
 }
 
 @media (max-width: 780px) {
@@ -123,5 +218,12 @@ a {
     top: 40px;
     right: 0px;
     /* Adjust the top offset for the third card */
+  }
+  .individualEntry{
+    display: flex;
+    justify-content: space-between;
+  }
+  .individualEntry div{
+    width: 200px;
   }
 }

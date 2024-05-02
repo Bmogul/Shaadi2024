@@ -2,6 +2,7 @@
 import React, { Suspense, useState, useEffect } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
 
 /*import main from "/frontCard.jpeg";
 import shitaabi from "/public/Shitaabi.png";
@@ -42,17 +43,20 @@ const Home = () => {
     if (!family) return;
     console.log("Family set", family);
     const updatedMainT = Object.values(family).some(
-      (fam) => fam.MainInvite === "1" || fam.MainInvite > 1,
+      (fam) =>
+        fam.MainInvite === "1" ||
+        parseInt(fam.MainInvite) > 1 ||
+        fam.MainInvite === "ALL",
     );
     setMainT(updatedMainT);
 
     const updatedShitaabiT = Object.values(family).some(
-      (fam) => fam.ShitabiInvite === "1" || fam.ShitabiInvite > 1,
+      (fam) => fam.ShitabiInvite === "1" || parseInt(fam.ShitabiInvite) > 1,
     );
     setShitaabiT(updatedShitaabiT);
 
     const updatedWaalimoT = Object.values(family).some(
-      (fam) => fam.WalimoInvite === "1" || fam.WalimoInvite > 1,
+      (fam) => fam.WalimoInvite === "1" || parseInt(fam.WalimoInvite) > 1,
     );
     setWaalimoT(updatedWaalimoT);
 
@@ -98,59 +102,108 @@ const Home = () => {
     setShowModal(false);
   };
 
-return (
-  <div className="container text-center landingpage">
-    {showModal && <RSVPForm closeForm={formSubmit} />}
-    <div className="row p-3 mt-3 mb-4">
-      <h1>Mogul Shaadi 1446</h1>
-    </div>
-    {!guid ? (
-      <div className="row">
-        <div className="col-12 text-center">
-          <p className="fs-2">Soon?</p>
-        </div>
+  const updateMember = (member) => {
+    const updatedFam = family.map((mem) => {
+      if (mem.NJscan_id === member.NJscan_id) {
+        return member;
+      }
+      return mem;
+    });
+    setFamily(updatedFam);
+  };
+
+  const saveRsvpRes = async () => {
+    toast("Thank you for your response")
+    setShowModal(false)
+    try {
+      const response = await fetch('/api/sheets', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ family }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message);
+      } else {
+        throw new Error('Failed to save data');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    console.log("Saving", family);
+  };
+
+  return (
+    <div className="container text-center landingpage">
+      {showModal && (
+        <RSVPForm
+          closeForm={formSubmit}
+          family={family}
+          invitedTo={{ mainT, shitaabiT, waalimoT }}
+          updateMember={updateMember}
+          saveRsvpRes={saveRsvpRes}
+        />
+      )}
+      <div className="row p-3 mt-3 mb-4">
+        <h1>Mogul Shaadi 1446</h1>
       </div>
-    ) : family ? (
-      <div className="row">
-        <div className="col-12 col-md-6 p-3 order-md-1 cardsDiv">
-          <div className="image-stack">
-            {cardOrder.map((item, index) => (
-              <div
-                key={index}
-                className="cardD"
-                onClick={() => handleCardClick(item)}
-                style={{ zIndex: cardOrder.indexOf(item) + 1 }}
-              >
-                <img src={item} alt="Card" className="cardView card-img-top" />
-              </div>
-            ))}
+      {!guid ? (
+        <div className="row">
+          <div className="col-12 text-center">
+            <p className="fs-2">Soon?</p>
           </div>
         </div>
-        <div className="col-12 col-md-6 d-flex align-items-center order-md-2">
-          <Details
-            genericLocation={gLoc}
-            detailedLocation={dLoc}
-            rsvpDate={rsvpDate}
-            openForm={openForm}
-          />
+      ) : family && Object.keys(family).length > 0 ? (
+        <div className="row">
+          <div className="col-12 col-md-5 p-3 order-md-1 cardsDiv">
+            <div className="image-stack">
+              {cardOrder.map((item, index) => (
+                <div
+                  key={index}
+                  className="cardD"
+                  onClick={() => handleCardClick(item)}
+                  style={{ zIndex: cardOrder.indexOf(item) + 1 }}
+                >
+                  <img
+                    src={item}
+                    alt="Card"
+                    className="cardView card-img-top"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="col-12 col-md-1" />
+          <div className="col-12 col-md-5 d-flex align-items-center order-md-2">
+            <Details
+              genericLocation={gLoc}
+              detailedLocation={dLoc}
+              rsvpDate={rsvpDate}
+              openForm={openForm}
+            />
+          </div>
         </div>
-      </div>
-    ) : (
-      <div className="row">
-        <div className="col-12 text-center">
-          <p className="fs-2">Loading...</p>
+      ) : (
+        <div className="row">
+          <div className="col-12 text-center">
+            <p className="fs-2">Loading...</p>
+          </div>
         </div>
-      </div>
-    )}
-  </div>
-);
+      )}
+    </div>
+  );
 };
 
 export default function Root() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Home />
+
+      <ToastContainer />
     </Suspense>
   );
 }
-
