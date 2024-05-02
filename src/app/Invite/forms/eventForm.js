@@ -10,14 +10,17 @@ const EventForm = ({ title, date, location, members, updateMember }) => {
     }
   }, [members]);
 
-  console.log('ALL MEMBERS', members);
+  console.log("ALL MEMBERS", members);
 
   // Check if the title is "Shaadi Jaman & Darees"
   const isMainEvent = title === "Shaadi Jaman & Darees";
 
   // Find the member with a non-zero MainFlag value (only if it's the main event)
   const memberWithFlag = isMainEvent
-    ? members?.find((member) => parseInt(member.MainFlag) !== 0)
+    ? members?.find(
+        (member) =>
+          !isNaN(parseInt(member.MainFlag)) && parseInt(member.MainFlag) > 0,
+      )
     : null;
 
   if (isLoading) {
@@ -66,7 +69,7 @@ const EventForm = ({ title, date, location, members, updateMember }) => {
         {isMainEvent &&
           members &&
           members
-            .filter((member) => member.MainFlag === 0)
+            .filter((member) => member.MainFlag === null)
             .map((member, index) => (
               <IndividualEntry
                 key={index}
