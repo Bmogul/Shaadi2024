@@ -23,6 +23,8 @@ const Home = () => {
   const [shitaabiT, setShitaabiT] = useState(false);
   const [waalimoT, setWaalimoT] = useState(false);
 
+  const [headMember, setHeadMember] = useState(false);
+
   const searchParams = useSearchParams();
   const guid = searchParams.get("guid");
 
@@ -68,7 +70,10 @@ const Home = () => {
       return order;
     });
 
-    console.log(updatedMainT, updatedShitaabiT, updatedWaalimoT);
+    const headM = family.find((fam) => fam["HOF_Flag"] === "Self");
+    setHeadMember(headM);
+
+    console.log(updatedMainT, updatedShitaabiT, updatedWaalimoT, headM);
   }, [family]);
 
   useEffect(() => {
@@ -113,13 +118,13 @@ const Home = () => {
   };
 
   const saveRsvpRes = async () => {
-    toast("Thank you for your response")
-    setShowModal(false)
+    toast("Thank you for your response");
+    setShowModal(false);
     try {
-      const response = await fetch('/api/sheets', {
-        method: 'POST',
+      const response = await fetch("/api/sheets", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ family }),
       });
@@ -128,7 +133,7 @@ const Home = () => {
         const data = await response.json();
         console.log(data.message);
       } else {
-        throw new Error('Failed to save data');
+        throw new Error("Failed to save data");
       }
     } catch (error) {
       console.error(error);
@@ -184,6 +189,8 @@ const Home = () => {
               detailedLocation={dLoc}
               rsvpDate={rsvpDate}
               openForm={openForm}
+              headMember={headMember}
+              family={family}
             />
           </div>
         </div>
