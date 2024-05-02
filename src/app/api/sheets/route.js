@@ -53,7 +53,7 @@ export async function POST(req) {
 
       // Find the matching row(s) based on GUID and NJscan_id
 
-      const matchingRows = allValues.filter((row, rowIndex) => {
+      const matchingRows = allValues.filter(async (row, rowIndex) => {
         if (
           row[guidColumnIndex] === GUID &&
           row[njScanIdColumnIndex] === NJscan_id
@@ -66,18 +66,19 @@ export async function POST(req) {
             parseInt(member.WalimoResponse),
           ];
 
-          console.log(values)
 
           // Append values for each matching row
-          sheets.spreadsheets.values.update({
+          const res = await sheets.spreadsheets.values.update({
             spreadsheetId: process.env.GOOGLE_SHEET_ID,
             range: cellRange,
             valueInputOption: "RAW",
             resource: {
               values: [values],
             },
-          });
+          })
 
+          //console.log(values)
+          console.log([res.status, res.statusText, res.data, res.body])
           return true;
         }
         return false;
@@ -89,46 +90,6 @@ export async function POST(req) {
     console.log(e);
     return NextResponse.json({ message: "Fail" }, { status: 500 });
   }
-  /*try {
-    const sheets = await getAuthClient();
-    const { data } = req.body;
-    const range = `playground!A1:Y1`;
-
-    // Check if the header row exists
-    const headerResponse = await sheets.spreadsheets.values.get({
-      spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range,
-    });
-
-    const headerRow = headerResponse.data.values?.[0];
-
-    // If header row doesn't exist, append it
-    if (!headerRow) {
-      await sheets.spreadsheets.values.append({
-        spreadsheetId: process.env.GOOGLE_SHEET_ID,
-        range: 'playground!A1',
-        valueInputOption: 'RAW',
-        resource: {
-          values: [Object.keys(data[0])],
-        },
-      });
-    }
-
-    // Append data rows
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: 'playground!A2',
-      valueInputOption: 'RAW',
-      resource: {
-        values: data.map((row) => Object.values(row)),
-      },
-    });
-
-    return NextResponse.json({ message: 'Data saved successfully'}, {status: 200});
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({message:'Internal Server Error'}, {status: 500})
-  }*/
 }
 
 export async function GET(req) {
