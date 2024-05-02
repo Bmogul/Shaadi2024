@@ -112,9 +112,27 @@ const Home = () => {
     setFamily(updatedFam);
   };
 
-  const saveRsvpRes = () => {
+  const saveRsvpRes = async () => {
     toast("Thank you for your response")
     setShowModal(false)
+    try {
+      const response = await fetch('/api/sheets', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ family }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message);
+      } else {
+        throw new Error('Failed to save data');
+      }
+    } catch (error) {
+      console.error(error);
+    }
     console.log("Saving", family);
   };
 
