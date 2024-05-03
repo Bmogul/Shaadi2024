@@ -81,7 +81,6 @@ const Home = () => {
       if (updatedMainT) order.push(main);
       const flip = Array(order.length).fill(false);
       setIsFlipped(flip);
-      console.log(order, flip);
       return order;
     });
 
@@ -107,24 +106,22 @@ const Home = () => {
     const frontCard = cardOrder[cardOrder.length - 1];
     const isFrontCardFlipped = frontCard.flipped;
 
-      if (!isFrontCardFlipped) {
-        console.log("NOT FRONT CARD");
-        // If the front card is not flipped, trigger the flip animation
-        const updatedOrder = cardOrder.map((card) =>
-          card === frontCard ? { ...card, flipped: true } : card,
-        );
-        setCardOrder(updatedOrder);
+    if (!isFrontCardFlipped) {
+      // If the front card is not flipped, trigger the flip animation
+      const updatedOrder = cardOrder.map((card) =>
+        card === frontCard ? { ...card, flipped: true } : card,
+      );
+      setCardOrder(updatedOrder);
 
-        // Wait for the flip animation to complete before updating the order
-        setTimeout(() => {
-          updateCardOrder(clickedCard);
-        }, 950); // Adjust the delay as needed (600ms is a typical flip animation duration)
-      } else {
-        // If the front card is already flipped, update the order immediately
-      //
+      // Wait for the flip animation to complete before updating the order
+      setTimeout(() => {
         updateCardOrder(clickedCard);
-      }
-    
+      }, 950); // Adjust the delay as needed (600ms is a typical flip animation duration)
+    } else {
+      // If the front card is already flipped, update the order immediately
+      //
+      updateCardOrder(clickedCard);
+    }
   };
 
   const updateCardOrder = (clickedCard) => {
@@ -202,7 +199,6 @@ const Home = () => {
               {cardOrder.map((item, index) => {
                 const handleClick = () => {
                   handleCardClick(item, index);
-                  console.log(item.flipped);
                 };
 
                 return (
