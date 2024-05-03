@@ -4,17 +4,13 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 
-/*import main from "/frontCard.jpeg";
-import shitaabi from "/public/Shitaabi.png";
-import waalimo from "/public/backCard.jpeg";*/
-
 import Details from "./Invite/details.js";
 import RSVPForm from "./Invite/rsvpForm.js";
 import Tunes from "./Invite/tunes.js";
 
-const main = { front: "/frontCard.jpeg", back: "/backCard.jpeg" };
-const shitaabi = { front: "/Shitaabi.png", back: "/ShitaabiBack.png" };
-const waalimo = { front: "/waalimoFront.jpg", back: "/WalimoBack.jpg" };
+const main = { front: "/frontCard.jpeg", back: "/backCard.jpeg", flipped: true };
+const shitaabi = { front: "/Shitaabi.png", back: "/ShitaabiBack.png", flipped: true };
+const waalimo = { front: "/waalimoFront.jpg", back: "/WalimoBack.jpg", flipped: true };
 
 const Home = () => {
   const [family, setFamily] = useState(null);
@@ -27,6 +23,8 @@ const Home = () => {
   const [headMember, setHeadMember] = useState(false);
 
   const [showBack, setShowBack] = useState(false);
+
+  const [isFlipped, setIsFlipped] = useState([]);
 
   const searchParams = useSearchParams();
   const guid = searchParams.get("guid");
@@ -69,6 +67,9 @@ const Home = () => {
       if (updatedWaalimoT) order.push(waalimo);
       if (updatedShitaabiT) order.push(shitaabi);
       if (updatedMainT) order.push(main);
+      const flip = Array(order.length).fill(false);
+      setIsFlipped(flip);
+      console.log(order, flip);
       return order;
     });
 
@@ -91,8 +92,13 @@ const Home = () => {
   }, [guid]);
 
   const handleCardClick = (clickedCard) => {
-    setShowBack(false)
+    /*setIsFlipped(
+      isFlipped.map((flipped, index) =>
+        index === cardOrder.indexOf(clickedCard) ? false : flipped,
+      ),
+    );*/
     const newOrder = cardOrder.filter((card) => card !== clickedCard);
+    newOrder.forEach(card => card.flipped = true)
     newOrder.push(clickedCard);
     setCardOrder(newOrder);
   };
@@ -164,11 +170,13 @@ const Home = () => {
             <div className="image-stack">
               {cardOrder.map((item, index) => {
                 const handleClick = () => {
-                  if (index === cardOrder.length - 1) {
-                    setShowBack(!showBack);
-                  } else {
+                 if (index === cardOrder.length - 1) {
+                      item.flipped = !item.flipped;
+                  }/* else {
                     handleCardClick(item);
-                  }
+                  }*/
+                  handleCardClick(item);
+                  console.log(item.flipped);
                 };
 
                 return (
@@ -178,11 +186,26 @@ const Home = () => {
                     onClick={handleClick}
                     style={{ zIndex: cardOrder.indexOf(item) + 1 }}
                   >
-                    <img
-                      src={cardOrder.length-1 == index ? showBack ? item.back : item.front : item.front}
-                      alt="Card"
-                      className="cardView card-img-top"
-                    />
+                    <div className="flip-card">
+                      <div
+                        className={`flip-card-inner ${item.flipped ? "flipped" : ""}`}
+                      >
+                        <div className="flip-card-front">
+                          <img
+                            src={item.front}
+                            alt="Card"
+                            className="cardView card-img-top"
+                          />
+                        </div>
+                        <div className="flip-card-back">
+                          <img
+                            src={item.back}
+                            alt="Card"
+                            className="cardView card-img-top"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 );
               })}
