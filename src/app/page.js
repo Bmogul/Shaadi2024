@@ -8,9 +8,21 @@ import Details from "./Invite/details.js";
 import RSVPForm from "./Invite/rsvpForm.js";
 import Tunes from "./Invite/tunes.js";
 
-const main = { front: "/frontCard.jpeg", back: "/backCard.jpeg", flipped: true };
-const shitaabi = { front: "/Shitaabi.png", back: "/ShitaabiBack.png", flipped: true };
-const waalimo = { front: "/waalimoFront.jpg", back: "/WalimoBack.jpg", flipped: true };
+const main = {
+  front: "/frontCard.jpeg",
+  back: "/backCard.jpeg",
+  flipped: true,
+};
+const shitaabi = {
+  front: "/Shitaabi.png",
+  back: "/ShitaabiBack.png",
+  flipped: true,
+};
+const waalimo = {
+  front: "/waalimoFront.jpg",
+  back: "/WalimoBack.jpg",
+  flipped: true,
+};
 
 const Home = () => {
   const [family, setFamily] = useState(null);
@@ -91,15 +103,34 @@ const Home = () => {
     fetchData(guid);
   }, [guid]);
 
-  const handleCardClick = (clickedCard) => {
-    /*setIsFlipped(
-      isFlipped.map((flipped, index) =>
-        index === cardOrder.indexOf(clickedCard) ? false : flipped,
-      ),
-    );*/
+  const handleCardClick = (clickedCard, index) => {
+    const frontCard = cardOrder[cardOrder.length - 1];
+    const isFrontCardFlipped = frontCard.flipped;
+
+      if (!isFrontCardFlipped) {
+        console.log("NOT FRONT CARD");
+        // If the front card is not flipped, trigger the flip animation
+        const updatedOrder = cardOrder.map((card) =>
+          card === frontCard ? { ...card, flipped: true } : card,
+        );
+        setCardOrder(updatedOrder);
+
+        // Wait for the flip animation to complete before updating the order
+        setTimeout(() => {
+          updateCardOrder(clickedCard);
+        }, 950); // Adjust the delay as needed (600ms is a typical flip animation duration)
+      } else {
+        // If the front card is already flipped, update the order immediately
+      //
+        updateCardOrder(clickedCard);
+      }
+    
+  };
+
+  const updateCardOrder = (clickedCard) => {
     const newOrder = cardOrder.filter((card) => card !== clickedCard);
-    newOrder.forEach(card => card.flipped = true)
-    newOrder.push(clickedCard);
+    newOrder.forEach((card) => (card.flipped = true));
+    newOrder.push({ ...clickedCard, flipped: false });
     setCardOrder(newOrder);
   };
 
@@ -170,12 +201,7 @@ const Home = () => {
             <div className="image-stack">
               {cardOrder.map((item, index) => {
                 const handleClick = () => {
-                 if (index === cardOrder.length - 1) {
-                      item.flipped = !item.flipped;
-                  }/* else {
-                    handleCardClick(item);
-                  }*/
-                  handleCardClick(item);
+                  handleCardClick(item, index);
                   console.log(item.flipped);
                 };
 
