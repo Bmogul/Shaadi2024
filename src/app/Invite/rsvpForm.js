@@ -27,10 +27,8 @@ const RSVPForm = ({
       (member) => parseInt(member.WalimoInvite) >= 1,
     );
     setWaalimoMembers(updatedMemW);
-    console.log("WAALIMO", updatedMemW);
   }, [family]);
   useEffect(() => {
-    console.log("MEMEBRS", shitaabiMembers);
   }, [shitaabiMembers]);
   useEffect(() => {
     const events = [];

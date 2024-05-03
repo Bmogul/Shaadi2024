@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Component = ({ key, member, event, updateMember }) => {
+const Component = ({ member, event, updateMember }) => {
   const [eventRes, setEventRes] = useState(undefined);
   const [memberData, setMemberData] = useState(member);
   const [mainFlag, setMainFlag] = useState(0);
@@ -11,7 +11,6 @@ const Component = ({ key, member, event, updateMember }) => {
   );
   // Handle changes when an option is selected
   const handleChange = (event) => {
-    console.log(event.target.value);
     let pplComing =
       event.target.value >= 0 || event.target.value == ""
         ? event.target.value
@@ -34,19 +33,16 @@ const Component = ({ key, member, event, updateMember }) => {
         break;
       case "Shaadi Darees & Jaman":
         setEventRes("MainResponse");
-        console.log("MAIN FLAG", member.MainFlag);
         setMainFlag(member.MainFlag ? parseInt(member.MainFlag) : 0);
-        setSelectedValue(parseInt(member.MainResponse))
+        setSelectedValue(parseInt(member.MainResponse));
         break;
       default:
-        console.log(event);
         setEventRes(null);
         break;
     }
   }, [event]);
 
   const handleButtonClick = (response) => {
-    console.log(response);
     const updatedMemberData = { ...memberData };
     updatedMemberData[eventRes] = response ? 1 : 0;
     setMemberData(updatedMemberData);
@@ -57,7 +53,6 @@ const Component = ({ key, member, event, updateMember }) => {
   const isNoButtonActive = parseInt(memberData[eventRes]) === 0;
 
   const renderMainFlag = () => {
-    console.log("flag", mainFlag);
     switch (mainFlag) {
       case 0:
         return (
@@ -69,8 +64,9 @@ const Component = ({ key, member, event, updateMember }) => {
             </div>
             <div className="col-md-3">
               <button
-                className={`rounded-4 fs-5 rsvpResBtn ${isYesButtonActive ? "rsvpResBtnS" : ""
-                  }`}
+                className={`rounded-4 fs-5 rsvpResBtn ${
+                  isYesButtonActive ? "rsvpResBtnS" : ""
+                }`}
                 onClick={() => handleButtonClick(true)}
               >
                 Yes
@@ -78,8 +74,9 @@ const Component = ({ key, member, event, updateMember }) => {
             </div>
             <div className="col-md-3">
               <button
-                className={`rounded-4 fs-5 rsvpResBtn ${isNoButtonActive ? "rsvpResBtnS" : ""
-                  }`}
+                className={`rounded-4 fs-5 rsvpResBtn ${
+                  isNoButtonActive ? "rsvpResBtnS" : ""
+                }`}
                 onClick={() => handleButtonClick(false)}
               >
                 No

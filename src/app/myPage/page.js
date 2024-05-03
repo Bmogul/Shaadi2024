@@ -12,7 +12,6 @@ export default function Home() {
       fetch("/api/sheets")
         .then((res) => res.json())
         .then((data) => {
-          console.log("GOT DATA", data);
           setData(data);
         });
     };

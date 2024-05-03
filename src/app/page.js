@@ -44,7 +44,6 @@ const Home = () => {
 
   useEffect(() => {
     if (!family) return;
-    console.log("Family set", family);
     const updatedMainT = Object.values(family).some(
       (fam) =>
         fam.MainInvite === "1" ||
@@ -73,18 +72,14 @@ const Home = () => {
 
     const headM = family.find((fam) => fam["HOF_Flag"] === "Self");
     setHeadMember(headM);
-
-    console.log(updatedMainT, updatedShitaabiT, updatedWaalimoT, headM);
   }, [family]);
 
   useEffect(() => {
-    console.log(guid);
     const fetchData = async (guid) => {
       try {
         const response = await fetch(`/api/sheets?guid=${guid}`);
         const data = await response.json();
         // Process the data as needed
-        console.log(data);
         setFamily(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -94,7 +89,6 @@ const Home = () => {
   }, [guid]);
 
   const handleCardClick = (clickedCard) => {
-    console.log(clickedCard);
     const newOrder = cardOrder.filter((card) => card !== clickedCard);
     newOrder.push(clickedCard);
     setCardOrder(newOrder);
@@ -132,14 +126,12 @@ const Home = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data.message);
       } else {
         throw new Error("Failed to save data");
       }
     } catch (error) {
       console.error(error);
     }
-    console.log("Saving", family);
   };
 
   return (

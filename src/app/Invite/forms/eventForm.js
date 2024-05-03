@@ -10,8 +10,6 @@ const EventForm = ({ title, date, location, members, updateMember }) => {
     }
   }, [members]);
 
-  console.log("ALL MEMBERS", members);
-
   // Check if the title is "Shaadi Jaman & Darees"
   const isMainEvent = title === "Shaadi Jaman & Darees";
 
