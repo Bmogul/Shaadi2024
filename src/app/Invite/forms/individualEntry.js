@@ -29,10 +29,10 @@ const Component = ({ key, member, event, updateMember }) => {
       case "Shitaabi":
         setEventRes("ShitabiResponse");
         break;
-      case "Waalimo":
+      case "Walimo":
         setEventRes("WalimoResponse");
         break;
-      case "Shaadi Jaman & Darees":
+      case "Shaadi Darees & Jaman":
         setEventRes("MainResponse");
         console.log("MAIN FLAG", member.MainFlag);
         setMainFlag(member.MainFlag ? parseInt(member.MainFlag) : 0);

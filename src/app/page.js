@@ -10,6 +10,7 @@ import waalimo from "/public/backCard.jpeg";*/
 
 import Details from "./Invite/details.js";
 import RSVPForm from "./Invite/rsvpForm.js";
+import Tunes from "./Invite/tunes.js";
 
 const main = "/frontCard.jpeg";
 const shitaabi = "/Shitaabi.png";
@@ -163,6 +164,7 @@ const Home = () => {
         </div>
       ) : family && Object.keys(family).length > 0 ? (
         <div className="row">
+          <Tunes />
           <div className="col-12 col-md-5 p-3 order-md-1 cardsDiv">
             <div className="image-stack">
               {cardOrder.map((item, index) => (

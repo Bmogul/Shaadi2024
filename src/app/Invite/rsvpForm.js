@@ -36,7 +36,7 @@ const RSVPForm = ({
     const events = [];
     if (invitedTo.mainT) {
       events.push({
-        title: "Shaadi Jaman & Darees",
+        title: "Shaadi Darees & Jaman",
         date: "August 17th, 2024",
         location: "341 Dunhams Corner Rd, East Brunswick, NJ 08816",
         members: mainMembers,
@@ -52,7 +52,7 @@ const RSVPForm = ({
     }
     if (invitedTo.waalimoT) {
       events.push({
-        title: "Waalimo",
+        title: "Walimo",
         date: "August 11th, 2024",
         location: "TBD, Houston, TX",
         members: waalimoMembers,
@@ -84,18 +84,16 @@ const RSVPForm = ({
             alt="close"
           />
           {currentEventIndex !== 0 && (
-            <div className="d-flex align-items-center arrowBtn eventPrev" onClick={handleNextClick}>
+            <div className="d-flex align-items-center arrowBtn eventPrev" onClick={handlePrevClick}>
               <img
                 src="/left_arrow.svg"
                 className="prevBtn"
-                onClick={handlePrevClick}
               />
               <span className="event-name">
                 {invitedEvents[currentEventIndex - 1].title}
               </span>
             </div>
           )}
-          <label className="fs-2 formHeader">RSVP</label>
           {currentEventIndex !== invitedEvents.length - 1 && (
             <div className="d-flex align-items-center arrowBtn eventNext" onClick={handleNextClick} > 
               <span className="event-name">
@@ -124,7 +122,7 @@ const RSVPForm = ({
         <div className="d-flex justify-content-center formUtilityBtns">
           <div className="col-md"></div>
           <div className="col-md">
-            <button className="saveBtn rsvpFormBtn rounded-4" onClick={saveRsvpRes}>
+            <button className="saveBtn rsvpFormBtn rounded-4 btn-primary" onClick={saveRsvpRes}>
               Save
             </button>
           </div>

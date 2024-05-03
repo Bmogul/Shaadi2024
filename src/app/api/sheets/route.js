@@ -54,11 +54,12 @@ export async function POST(req) {
           row[njScanIdColumnIndex] === NJscan_id
         ) {
           const rowNumber = allValues.indexOf(row) + 2;
-          const cellRange = `playground!V${rowNumber}:Y${rowNumber}`;
+          const cellRange = `playground!V${rowNumber}:Z${rowNumber}`;
           const values = [
             parseInt(member.MainResponse),
             parseInt(member.ShitabiResponse),
             parseInt(member.WalimoResponse),
+            Date.now()
           ];
 
           valuesToUpdate[cellRange] = {
@@ -132,9 +133,9 @@ export async function GET(req) {
 
       parsed[hofId].push(parsedRow);
     });
-    console.log(rawData[0]);
     //console.log("PARSED DATA", parsed);
     const familyData = parsed[guid] || [];
+    console.log(familyData)
 
     return NextResponse.json(familyData);
   } catch (err) {
