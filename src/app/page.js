@@ -4,17 +4,25 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 
-/*import main from "/frontCard.jpeg";
-import shitaabi from "/public/Shitaabi.png";
-import waalimo from "/public/backCard.jpeg";*/
-
 import Details from "./Invite/details.js";
 import RSVPForm from "./Invite/rsvpForm.js";
 import Tunes from "./Invite/tunes.js";
 
-const main = "/frontCard.jpeg";
-const shitaabi = "/Shitaabi.png";
-const waalimo = "/waalimoFront.jpg";
+const main = {
+  front: "/frontCard.jpeg",
+  back: "/backCard.jpeg",
+  flipped: true,
+};
+const shitaabi = {
+  front: "/Shitaabi.png",
+  back: "/ShitaabiBack.png",
+  flipped: true,
+};
+const waalimo = {
+  front: "/waalimoFront.jpg",
+  back: "/WalimoBack.jpg",
+  flipped: true,
+};
 
 const Home = () => {
   const [family, setFamily] = useState(null);
@@ -25,6 +33,10 @@ const Home = () => {
   const [waalimoT, setWaalimoT] = useState(false);
 
   const [headMember, setHeadMember] = useState(false);
+
+  const [showBack, setShowBack] = useState(false);
+
+  const [isFlipped, setIsFlipped] = useState([]);
 
   const searchParams = useSearchParams();
   const guid = searchParams.get("guid");
@@ -67,6 +79,8 @@ const Home = () => {
       if (updatedWaalimoT) order.push(waalimo);
       if (updatedShitaabiT) order.push(shitaabi);
       if (updatedMainT) order.push(main);
+      const flip = Array(order.length).fill(false);
+      setIsFlipped(flip);
       return order;
     });
 
@@ -88,9 +102,32 @@ const Home = () => {
     fetchData(guid);
   }, [guid]);
 
-  const handleCardClick = (clickedCard) => {
+  const handleCardClick = (clickedCard, index) => {
+    const frontCard = cardOrder[cardOrder.length - 1];
+    const isFrontCardFlipped = frontCard.flipped;
+
+    if (!isFrontCardFlipped) {
+      // If the front card is not flipped, trigger the flip animation
+      const updatedOrder = cardOrder.map((card) =>
+        card === frontCard ? { ...card, flipped: true } : card,
+      );
+      setCardOrder(updatedOrder);
+
+      // Wait for the flip animation to complete before updating the order
+      setTimeout(() => {
+        updateCardOrder(clickedCard);
+      }, 950); // Adjust the delay as needed (600ms is a typical flip animation duration)
+    } else {
+      // If the front card is already flipped, update the order immediately
+      //
+      updateCardOrder(clickedCard);
+    }
+  };
+
+  const updateCardOrder = (clickedCard) => {
     const newOrder = cardOrder.filter((card) => card !== clickedCard);
-    newOrder.push(clickedCard);
+    newOrder.forEach((card) => (card.flipped = true));
+    newOrder.push({ ...clickedCard, flipped: false });
     setCardOrder(newOrder);
   };
 
@@ -159,20 +196,41 @@ const Home = () => {
           <Tunes />
           <div className="col-12 col-md-5 p-3 order-md-1 cardsDiv">
             <div className="image-stack">
-              {cardOrder.map((item, index) => (
-                <div
-                  key={index}
-                  className="cardD"
-                  onClick={() => handleCardClick(item)}
-                  style={{ zIndex: cardOrder.indexOf(item) + 1 }}
-                >
-                  <img
-                    src={item}
-                    alt="Card"
-                    className="cardView card-img-top"
-                  />
-                </div>
-              ))}
+              {cardOrder.map((item, index) => {
+                const handleClick = () => {
+                  handleCardClick(item, index);
+                };
+
+                return (
+                  <div
+                    key={index}
+                    className="cardD"
+                    onClick={handleClick}
+                    style={{ zIndex: cardOrder.indexOf(item) + 1 }}
+                  >
+                    <div className="flip-card">
+                      <div
+                        className={`flip-card-inner ${item.flipped ? "flipped" : ""}`}
+                      >
+                        <div className="flip-card-front">
+                          <img
+                            src={item.front}
+                            alt="Card"
+                            className="cardView card-img-top"
+                          />
+                        </div>
+                        <div className="flip-card-back">
+                          <img
+                            src={item.back}
+                            alt="Card"
+                            className="cardView card-img-top"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
