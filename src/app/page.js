@@ -12,9 +12,9 @@ import Details from "./Invite/details.js";
 import RSVPForm from "./Invite/rsvpForm.js";
 import Tunes from "./Invite/tunes.js";
 
-const main = "/frontCard.jpeg";
-const shitaabi = "/Shitaabi.png";
-const waalimo = "/waalimoFront.jpg";
+const main = { front: "/frontCard.jpeg", back: "/backCard.jpeg" };
+const shitaabi = { front: "/Shitaabi.png", back: "/ShitaabiBack.png" };
+const waalimo = { front: "/waalimoFront.jpg", back: "/WalimoBack.jpg" };
 
 const Home = () => {
   const [family, setFamily] = useState(null);
@@ -25,6 +25,8 @@ const Home = () => {
   const [waalimoT, setWaalimoT] = useState(false);
 
   const [headMember, setHeadMember] = useState(false);
+
+  const [showBack, setShowBack] = useState(false);
 
   const searchParams = useSearchParams();
   const guid = searchParams.get("guid");
@@ -89,6 +91,7 @@ const Home = () => {
   }, [guid]);
 
   const handleCardClick = (clickedCard) => {
+    setShowBack(false)
     const newOrder = cardOrder.filter((card) => card !== clickedCard);
     newOrder.push(clickedCard);
     setCardOrder(newOrder);
@@ -159,20 +162,30 @@ const Home = () => {
           <Tunes />
           <div className="col-12 col-md-5 p-3 order-md-1 cardsDiv">
             <div className="image-stack">
-              {cardOrder.map((item, index) => (
-                <div
-                  key={index}
-                  className="cardD"
-                  onClick={() => handleCardClick(item)}
-                  style={{ zIndex: cardOrder.indexOf(item) + 1 }}
-                >
-                  <img
-                    src={item}
-                    alt="Card"
-                    className="cardView card-img-top"
-                  />
-                </div>
-              ))}
+              {cardOrder.map((item, index) => {
+                const handleClick = () => {
+                  if (index === cardOrder.length - 1) {
+                    setShowBack(!showBack);
+                  } else {
+                    handleCardClick(item);
+                  }
+                };
+
+                return (
+                  <div
+                    key={index}
+                    className="cardD"
+                    onClick={handleClick}
+                    style={{ zIndex: cardOrder.indexOf(item) + 1 }}
+                  >
+                    <img
+                      src={cardOrder.length-1 == index ? showBack ? item.back : item.front : item.front}
+                      alt="Card"
+                      className="cardView card-img-top"
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
 
