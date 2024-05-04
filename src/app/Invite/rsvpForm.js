@@ -34,7 +34,7 @@ const RSVPForm = ({
     const events = [];
     if (invitedTo.mainT) {
       events.push({
-        title: "Shaadi Darees & Jaman",
+        title: "Kushi ni Majlis & Jaman",
         date: "August 17th, 2024",
         location: "341 Dunhams Corner Rd, East Brunswick, NJ 08816",
         members: mainMembers,

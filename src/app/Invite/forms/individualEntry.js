@@ -31,7 +31,7 @@ const Component = ({ member, event, updateMember }) => {
       case "Walimo":
         setEventRes("WalimoResponse");
         break;
-      case "Shaadi Darees & Jaman":
+      case "Kushi ni Majlis & Jaman":
         setEventRes("MainResponse");
         setMainFlag(member.MainFlag ? parseInt(member.MainFlag) : 0);
         setSelectedValue(parseInt(member.MainResponse));
