@@ -34,7 +34,7 @@ const RSVPForm = ({
     const events = [];
     if (invitedTo.mainT) {
       events.push({
-        title: "Kushi ni Majlis & Jaman",
+        title: "Khushi ni Majlis & Jaman",
         date: "August 17th, 2024",
         location: "341 Dunhams Corner Rd, East Brunswick, NJ 08816",
         members: mainMembers,
@@ -120,7 +120,7 @@ const RSVPForm = ({
         <div className="d-flex justify-content-center formUtilityBtns">
           <div className="col-md"></div>
           <div className="col-md">
-            <button className="saveBtn rsvpFormBtn rounded-4 btn-primary" onClick={saveRsvpRes}>
+            <button className="saveBtn rsvpFormBtn rounded-4 btn-primary fs-4" onClick={saveRsvpRes}>
               Save
             </button>
           </div>
