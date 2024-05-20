@@ -28,8 +28,7 @@ const RSVPForm = ({
     );
     setWaalimoMembers(updatedMemW);
   }, [family]);
-  useEffect(() => {
-  }, [shitaabiMembers]);
+  useEffect(() => {}, [shitaabiMembers]);
   useEffect(() => {
     const events = [];
     if (invitedTo.mainT) {
@@ -69,66 +68,83 @@ const RSVPForm = ({
     );
   };
   return (
-  <dialog open className="formModal">
-    {invitedEvents === undefined || invitedEvents[currentEventIndex] === undefined ? (
-      <h3>Loading...</h3>
-    ) : (
-      <div className="row">
-        <div className="col-md-12 d-flex">
-          <img
-            className="closeRing"
-            src="/close_ring.svg"
-            onClick={closeForm}
-            alt="close"
-          />
-          {currentEventIndex !== 0 && (
-            <div className="d-flex align-items-center arrowBtn eventPrev" onClick={handlePrevClick}>
-              <img
-                src="/left_arrow.svg"
-                className="prevBtn"
-              />
-              <span className="event-name">
-                {invitedEvents[currentEventIndex - 1].title}
-              </span>
-            </div>
-          )}
-          {currentEventIndex !== invitedEvents.length - 1 && (
-            <div className="d-flex align-items-center arrowBtn eventNext" onClick={handleNextClick} > 
-              <span className="event-name">
-                {invitedEvents[currentEventIndex + 1].title}
-              </span>
-              <img
-                src="/right_arrow.svg"
-                className="nextBtn"
-              />
-            </div>
-          )}
-        </div>
-      </div>
-    )}
-
-    {invitedEvents.length > 0 && invitedEvents[currentEventIndex] !== undefined && (
-      <div>
-        <EventForm
-          key={invitedEvents[currentEventIndex].title}
-          title={invitedEvents[currentEventIndex].title}
-          date={invitedEvents[currentEventIndex].date}
-          location={invitedEvents[currentEventIndex].location}
-          members={invitedEvents[currentEventIndex].members}
-          updateMember={updateMember}
-        />
-        <div className="d-flex justify-content-center formUtilityBtns">
-          <div className="col-md"></div>
-          <div className="col-md">
-            <button className="saveBtn rsvpFormBtn rounded-4 btn-primary fs-4" onClick={saveRsvpRes}>
-              Save
-            </button>
+    <dialog open className="formModal">
+      {invitedEvents === undefined ||
+      invitedEvents[currentEventIndex] === undefined ? (
+        <h3>Loading...</h3>
+      ) : (
+        <div className="row">
+          <div className="col-md-12 d-flex">
+            <img
+              className="closeRing"
+              src="/close_ring.svg"
+              onClick={closeForm}
+              alt="close"
+            />
+            {currentEventIndex !== 0 && (
+              <div
+                className="d-flex align-items-center arrowBtn eventPrev"
+                onClick={handlePrevClick}
+              >
+                <img src="/left_arrow.svg" className="prevBtn" />
+                <span className="event-name">
+                  {invitedEvents[currentEventIndex - 1].title}
+                </span>
+              </div>
+            )}
+            {currentEventIndex !== invitedEvents.length - 1 && (
+              <div
+                className="d-flex align-items-center arrowBtn eventNext"
+                onClick={handleNextClick}
+              >
+                <span className="event-name">
+                  {invitedEvents[currentEventIndex + 1].title}
+                </span>
+                <img src="/right_arrow.svg" className="nextBtn" />
+              </div>
+            )}
           </div>
-          <div className="col-md"></div>
         </div>
-      </div>
-    )}
-  </dialog>
-);};
+      )}
+
+      {invitedEvents.length > 0 &&
+        invitedEvents[currentEventIndex] !== undefined && (
+          <div>
+            <EventForm
+              key={invitedEvents[currentEventIndex].title}
+              title={invitedEvents[currentEventIndex].title}
+              date={invitedEvents[currentEventIndex].date}
+              location={invitedEvents[currentEventIndex].location}
+              members={invitedEvents[currentEventIndex].members}
+              updateMember={updateMember}
+            />
+            <div className="d-flex justify-content-center formUtilityBtns">
+              <div className="col-md"></div>
+
+              <div className="col-md">
+                {currentEventIndex === invitedEvents.length - 1 ? (
+                  <button
+                    className="saveBtn rsvpFormBtn rounded-4 btn-primary fs-4"
+                    onClick={saveRsvpRes}
+                  >
+                    Save
+                  </button>
+                ) : (
+                  <button
+                    className="saveBtn rsvpFormBtn rounded-4 btn-primary fs-4"
+                    onClick={handleNextClick}
+                  >
+                    Next
+                  </button>
+                )}{" "}
+              </div>
+
+              <div className="col-md"></div>
+            </div>
+          </div>
+        )}
+    </dialog>
+  );
+};
 
 export default RSVPForm;
