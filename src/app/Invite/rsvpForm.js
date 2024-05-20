@@ -81,12 +81,12 @@ const RSVPForm = ({
               onClick={closeForm}
               alt="close"
             />
-            {currentEventIndex !== 0 && (
+            {/*currentEventIndex !== 0 && (
               <div
                 className="d-flex align-items-center arrowBtn eventPrev"
                 onClick={handlePrevClick}
               >
-                <img src="/left_arrow.svg" className="prevBtn" />
+                <img src="/left_arrow.svg" className="" />
                 <span className="event-name">
                   {invitedEvents[currentEventIndex - 1].title}
                 </span>
@@ -100,9 +100,9 @@ const RSVPForm = ({
                 <span className="event-name">
                   {invitedEvents[currentEventIndex + 1].title}
                 </span>
-                <img src="/right_arrow.svg" className="nextBtn" />
+                <img src="/right_arrow.svg" className="" />
               </div>
-            )}
+            )*/}
           </div>
         </div>
       )}
@@ -119,27 +119,41 @@ const RSVPForm = ({
               updateMember={updateMember}
             />
             <div className="d-flex justify-content-center formUtilityBtns">
-              <div className="col-md"></div>
+                {currentEventIndex !== 0 && (
 
-              <div className="col-md">
-                {currentEventIndex === invitedEvents.length - 1 ? (
+              <div className="col-md d-flex justify-content-center">
                   <button
-                    className="saveBtn rsvpFormBtn rounded-4 btn-primary fs-4"
-                    onClick={saveRsvpRes}
+                    className="prevBtn rsvpFormBtn rounded-4 btn-secondary fs-4 me-2"
+                    onClick={handlePrevClick}
                   >
-                    Save
+                    Prev
                   </button>
-                ) : (
+
+              </div>
+                )}
+              {currentEventIndex === invitedEvents.length - 1 ? (
+                <>
+                  <div className="col-md">
+                    <button
+                      className="saveBtn rsvpFormBtn rounded-4 btn-primary fs-4"
+                      onClick={saveRsvpRes}
+                    >
+                      Save
+                    </button>
+                  </div>
+
+                  <div className="col-md"></div>
+                </>
+              ) : (
+                <div className="col-md d-flex justify-content-center">
                   <button
-                    className="saveBtn rsvpFormBtn rounded-4 btn-primary fs-4"
+                    className="nextBtn rsvpFormBtn rounded-4 btn-primary fs-4"
                     onClick={handleNextClick}
                   >
                     Next
                   </button>
-                )}{" "}
-              </div>
-
-              <div className="col-md"></div>
+                </div>
+              )}{" "}
             </div>
           </div>
         )}

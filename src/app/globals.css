@@ -12,7 +12,7 @@ a {
   all: unset;
 }
 
-.landingpage{
+.landingpage {
   margin-bottom: 150px;
 }
 
@@ -193,6 +193,8 @@ a {
   background-color: white;
   /* Adjust the background color as needed */
   padding: 0.5rem;
+  padding-left: 100px;
+  padding-right: 100px;
 }
 
 .formUtilityBtns .col-md {
@@ -234,12 +236,12 @@ a {
   cursor: pointer;
 }
 
-.saveBtn{
+.saveBtn {
   padding: 10px 25px;
   background: #87c1ff;
 }
 
-.Audio{
+.Audio {
   position: absolute;
   top: 35px;
   right: 45%;
@@ -247,15 +249,24 @@ a {
 
   transition: transform 0.5s ease;
 }
-.Audio img{
+
+.Audio img {
   width: 35px;
   cursor: pointer;
   transition: transform 0.5s ease;
 }
 
-.AudioImg:hover{
+.AudioImg:hover {
   transform: scale(1.5);
 }
+
+/*.nextBtn {
+  margin-right: 100px;
+}
+
+.prevBtn {
+  margin-left: 100px;
+}*/
 
 @media (max-width: 840px) {
   .formModal {
@@ -307,6 +318,14 @@ a {
 
   .eventNext {
     left: 70%;
+  }
+
+  .nextBtn {
+    margin: 0;
+  }
+
+  .prevBtn {
+    margin: 0;
   }
 }
 
