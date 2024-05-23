@@ -34,7 +34,7 @@ const RSVPForm = ({
     if (invitedTo.mainT) {
       events.push({
         title: "Khushi ni Majlis & Jaman",
-        date: "August 17th, 2024",
+        date: "Evening, August 17th, 2024",
         location: "341 Dunhams Corner Rd, East Brunswick, NJ 08816",
         members: mainMembers,
       });
@@ -138,7 +138,7 @@ const RSVPForm = ({
                       className="saveBtn rsvpFormBtn rounded-4 btn-primary fs-4"
                       onClick={saveRsvpRes}
                     >
-                      Save
+                      Submit
                     </button>
                   </div>
 
