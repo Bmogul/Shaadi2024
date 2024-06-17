@@ -23,7 +23,7 @@ export async function POST(req) {
     if (!family || family.length === 0)
       return NextResponse.json(
         { message: "Invalid data format" },
-        { status: 400 }
+        { status: 400 },
       );
 
     const sheets = await getGoogleSheets();
@@ -59,7 +59,7 @@ export async function POST(req) {
             parseInt(member.MainResponse),
             parseInt(member.ShitabiResponse),
             parseInt(member.WalimoResponse),
-            Date.now()
+            Date.now(),
           ];
 
           valuesToUpdate[cellRange] = {
@@ -90,7 +90,7 @@ export async function POST(req) {
         spreadsheetId: process.env.GOOGLE_SHEET_ID,
         resource: batchUpdateRequest,
       });
-      console.log(batchUpdateRequest)
+      console.log(batchUpdateRequest);
     }
 
     return NextResponse.json({ message: "Success" }, { status: 200 });
@@ -109,11 +109,11 @@ export async function GET(req) {
       return NextResponse.json({ message: "Missing guid" }, { status: 400 });
 
     const sheets = await getGoogleSheets();
-    const response = await sheets.spreadsheets.values.get({
+    let response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
       range: "playground",
     });
-    const rawData = response.data.values;
+    let rawData = response.data.values;
     const parsed = {};
     const keys = rawData.shift();
     console.log("KEYS", keys, "KEYS");
@@ -135,9 +135,23 @@ export async function GET(req) {
     });
     //console.log("PARSED DATA", parsed);
     const familyData = parsed[guid] || [];
-    console.log(familyData)
+    //console.log(familyData)
 
-    return NextResponse.json(familyData);
+    response = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GOOGLE_SHEET_ID,
+      range: "WebsiteData!A2:A2",
+    });
+    rawData = response.data.values;
+    let readlineDate = rawData[0][0];
+    readlineDate = formatDate(readlineDate);
+    console.log("Date from sheet: ", readlineDate);
+
+    const combinedData = {
+      familyData: familyData,
+      readlineDate: readlineDate,
+    };
+
+    return NextResponse.json(combinedData);
   } catch (err) {
     console.error(err);
     return NextResponse.json(
@@ -146,3 +160,38 @@ export async function GET(req) {
     );
   }
 }
+
+const formatDate = (dateStr) => {
+  const parts = dateStr.split("/");
+  const month = parseInt(parts[0]);
+  let day = parseInt(parts[1]);
+  const year = parseInt(parts[2]);
+  const date = new Date(year, month - 1, day);
+  const options = {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  };
+  let formattedDate = date.toLocaleDateString(undefined, options);
+  formattedDate = formattedDate.split(" ");
+
+  day = parseInt(formattedDate[2].replace(/,$/, ""));
+  switch (day % 10) {
+    case 1:
+      day = `${day}st,`;
+      break;
+    case 2:
+      day = `${day}nd,`;
+      break;
+    case 3:
+      day = `${day}rd,`;
+      break;
+    default:
+      day = `${day}th,`;
+      break;
+  }
+  formattedDate[2] = day;
+  formattedDate = formattedDate.join(" ");
+  return formattedDate;
+};

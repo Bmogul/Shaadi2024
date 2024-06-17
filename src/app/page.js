@@ -25,6 +25,7 @@ const Home = () => {
   const [waalimoT, setWaalimoT] = useState(false);
 
   const [headMember, setHeadMember] = useState(false);
+  const [rsvpDate, setDate] = useState(null);
 
   const searchParams = useSearchParams();
   const guid = searchParams.get("guid");
@@ -32,7 +33,6 @@ const Home = () => {
   const gLoc = "Al Masjid Al Zainee Anjuman-e-Burhani (New Jersey)";
   const dLoc =
     "341 Dunhams Corner Rd, East Brunswick, NJ 08816 Saturday, August 17th, 2024";
-  const rsvpDate = "Saturday, June 15th, 2024";
 
   const [cardOrder, setCardOrder] = useState(() => {
     const order = [];
@@ -80,7 +80,8 @@ const Home = () => {
         const response = await fetch(`/api/sheets?guid=${guid}`);
         const data = await response.json();
         // Process the data as needed
-        setFamily(data);
+        setFamily(data.familyData);
+        setDate(data.readlineDate);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
