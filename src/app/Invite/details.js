@@ -60,7 +60,7 @@ const Details = ({
           style={{}}
           onClick={openForm}
         >
-          RSVP Now!
+          View RSVP Details
         </button>
       </div>
     </div>

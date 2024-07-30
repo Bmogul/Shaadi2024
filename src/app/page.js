@@ -100,6 +100,8 @@ const Home = () => {
   };
 
   const formSubmit = () => {
+
+    toast("For any RSVP changes please contact +17328236452 on Whatsapp");
     setShowModal(false);
   };
 

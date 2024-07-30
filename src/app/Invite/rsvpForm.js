@@ -34,7 +34,7 @@ const RSVPForm = ({
     if (invitedTo.mainT) {
       events.push({
         title: "Khushi ni Majlis & Jaman",
-        date: "Evening, August 17th, 2024",
+        date: "5:15 PM, August 17th, 2024",
         location: "341 Dunhams Corner Rd, East Brunswick, NJ 08816",
         members: mainMembers,
       });
@@ -42,7 +42,7 @@ const RSVPForm = ({
     if (invitedTo.shitaabiT) {
       events.push({
         title: "Shitaabi",
-        date: "August 16th, 2024",
+        date: "6:30 PM, August 16th, 2024",
         location: "10 Wood Lake Ct, North Brunswick, NJ 08902",
         members: shitaabiMembers,
       });
@@ -50,8 +50,8 @@ const RSVPForm = ({
     if (invitedTo.waalimoT) {
       events.push({
         title: "Walimo",
-        date: "August 11th, 2024",
-        location: "TBD, Houston, TX",
+        date: "12:00 PM, August 11th, 2024",
+        location: "17730 Coventry Park Dr, Houston, TX 77084",
         members: waalimoMembers,
       });
     }
@@ -136,9 +136,9 @@ const RSVPForm = ({
                   <div className="col-md">
                     <button
                       className="saveBtn rsvpFormBtn rounded-4 btn-primary fs-4"
-                      onClick={saveRsvpRes}
+                      onClick={closeForm}
                     >
-                      Submit
+                      Close
                     </button>
                   </div>
 
